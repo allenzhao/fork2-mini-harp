@@ -2,6 +2,7 @@ module.exports = function createMiniHarp(root) {
     var app = require("connect")();
     var serveStatic = require("serve-static");
     var makeJade = require("./lib/processor/jade.js");
+    var makeLess = require("./lib/processor/less.js");
     var path = require("path");
     app.use(serveStatic(root));
     app.use(function(request, response, next) {
@@ -12,6 +13,7 @@ module.exports = function createMiniHarp(root) {
         }
     });
     app.use(makeJade(root));
+    app.use(makeLess(root));
     return app;
 
 }

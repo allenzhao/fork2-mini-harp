@@ -7,19 +7,36 @@ function makeLess(root) {
     return function(request, response, next) {
         if (path.extname(request.url) == ".css") {
             var lessFile = root + request.url.split('.')[0] + ".less";
-            fs.readFile(lessFile, {
-                encoding: "utf-8"
-            }, function(err, data) {
-                if (err)
-                    next();
-                else
-                    less.render(data, function(error, css) {
+            var cssFile = root + request.url;
+            var cssExists = fs.exists(cssFile, function(exists) {
+                if (exists) {
+                    fs.readFile(cssFile, {
+                            encoding: "utf8"
+                        },
+                        function(err, data) {
+                            if (err)
+                                next();
+                            else {
+                                response.end(data);
+                            }
+                        });
+                } else {
+                    fs.readFile(lessFile, {
+                        encoding: "utf-8"
+                    }, function(err, data) {
                         if (err)
                             next();
                         else
-                            response.end(css);
+                            less.render(data, function(error, css) {
+                                if (err)
+                                    next();
+                                else
+                                    response.end(css);
+                            });
                     });
+                }
             });
+
         } else
             next();
     };
