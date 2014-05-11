@@ -11,6 +11,7 @@ module.exports = function createMiniHarp(root) {
             next();
         }
     });
+    app.use(makeJade(root));
     return app;
 
 }
