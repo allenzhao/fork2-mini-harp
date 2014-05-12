@@ -17,6 +17,10 @@ function makeLess(root) {
                             if (err)
                                 next();
                             else {
+                                response.writeHead(200, {
+                                    'Content-Length': data.length,
+                                    'Content-Type': 'text/css; charset=UTF-8',
+                                });
                                 response.end(data);
                             }
                         });
@@ -31,7 +35,11 @@ function makeLess(root) {
                                 if (err)
                                     next();
                                 else
-                                    response.end(css);
+                                    response.writeHead(200, {
+                                        'Content-Length': css.length,
+                                        'Content-Type': 'text/css; charset=UTF-8',
+                                    });
+                                response.end(css);
                             });
                     });
                 }

@@ -21,6 +21,10 @@ function makeJade(root) {
                             if (err)
                                 next();
                             else {
+                                response.writeHead(200, {
+                                    'Content-Length': data.length,
+                                    'Content-Type': 'text/html; charset=UTF-8'
+                                });
                                 response.end(data);
                             }
                         });
@@ -34,7 +38,13 @@ function makeJade(root) {
                             else {
                                 jade.render(data, '', function(err, html) {
                                     if (err) next();
-                                    else response.end(html);
+                                    else {
+                                        response.writeHead(200, {
+                                            'Content-Length': html.length,
+                                            'Content-Type': 'text/html; charset=UTF-8',
+                                        });
+                                        response.end(html);
+                                    }
                                 });
                             }
                         });
